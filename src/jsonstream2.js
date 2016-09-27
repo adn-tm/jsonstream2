@@ -29,8 +29,11 @@ module.exports.parse = function(path, map) {
     if (type(chunk) === 'string') {
       chunk = new Buffer(chunk)
     }
-
-    parser.write(chunk)
+    try {
+      parser.write(chunk)
+    } catch(e) {
+      this.emit("error", e);
+    }
     fn()
   })
 
