@@ -26,6 +26,21 @@ module.exports.parse = function(path, map) {
   var parser = new Parser()
 
   var stream = through.obj(function(chunk, enc, fn) {
+    function addOne(data) {
+      // TODO: write path analizer
+      stream.push(data);
+    }
+    if (Array.isArray(chunk)) {
+      chunck.map(addOne);
+      fn();
+      return;
+    } 
+    if (typeof chunk =="object" && !(chunk instanceof Buffer) ) {
+      addOne(chunk);
+      fn();
+      return;
+    } // else console.log(typeof chunk, (chunk instanceof Buffer) );
+
     if (type(chunk) === 'string') {
       chunk = new Buffer(chunk)
     }
